@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "lib": [
+            "ESNext"
+        ],
+        "strict": false,
+        "skipLibCheck": true,
+        "newLine": "LF",
+        "strictNullChecks": true,
+        "strictFunctionTypes": true
+    },
+    "include": [
+        "declarations/android.d.ts",
+        "declarations/adapted-script.d.ts",
+        "declarations/preloader.d.ts",
+        "declarations/core-engine.d.ts",
+        "source/**/*"
+    ]
+}
