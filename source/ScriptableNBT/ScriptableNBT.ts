@@ -1,8 +1,8 @@
-// Copyright (c) 2022 CuiZhenhang (github.com/CuiZhenhang)
+// Copyright (c) 2022-2024 CuiZhenhang (github.com/CuiZhenhang)
 
 LIBRARY({
     name: 'ScriptableNBT',
-    version: 1,
+    version: 2,
     api: 'CoreEngine',
     shared: true
 })
@@ -19,12 +19,13 @@ namespace ScriptableNBT {
          */
         get value(): Nullable<T>
         /**
-         * Set the Scriptable NBT data.
-         * With automatic check type and range.
+         * Set the Scriptable NBT data.\
+         * With automatic check for type and range.
          */
         set value(value: Nullable<T>)
         /**
-         * Set the Scriptable NBT data from compound tag
+         * Set the Scriptable NBT data from compound tag.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
          * @param compoundTag source compound tag
          * @param key for the specified key
          */
@@ -36,7 +37,8 @@ namespace ScriptableNBT {
          */
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void
         /**
-         * Set the Scriptable NBT data from list tag
+         * Set the Scriptable NBT data from list tag.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
          * @param listTag source list tag
          * @param index for the specified index
          */
@@ -64,7 +66,7 @@ namespace ScriptableNBT {
             return this._value
         }
         set value(value: Nullable<number | boolean>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -84,7 +86,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getByte(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -92,15 +94,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getByte(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putByte(index, this.value)
         }
     }
@@ -120,7 +122,7 @@ namespace ScriptableNBT {
             return this._value
         }
         set value(value: Nullable<number>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -139,7 +141,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getShort(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -147,15 +149,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getShort(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putShort(index, this.value)
         }
     }
@@ -175,7 +177,7 @@ namespace ScriptableNBT {
             return this._value
         }
         set value(value: Nullable<number>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -194,7 +196,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getInt(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -202,15 +204,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getInt(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putInt(index, this.value)
         }
     }
@@ -227,7 +229,7 @@ namespace ScriptableNBT {
         }
 
         get value(): Nullable<number> {
-            if (this._value === null) return null
+            if (this._value == null) return null
             // @ts-ignore
             if (this._value.getClass) {
                 return (this._value as java.lang.Long).longValue()
@@ -236,7 +238,7 @@ namespace ScriptableNBT {
             }
         }
         set value(value: Nullable<number | java.lang.Long>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -256,7 +258,7 @@ namespace ScriptableNBT {
          * Get the Scriptable NBT data as [[java.lang.Long]]
          */
         get longValue(): Nullable<java.lang.Long> {
-            if (this._value === null) return null
+            if (this._value == null) return null
             // @ts-ignore
             if (this._value.getClass) {
                 return this._value as java.lang.Long
@@ -273,7 +275,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getInt64(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -281,15 +283,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getInt64(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putInt64(index, this.value)
         }
     }
@@ -307,7 +309,7 @@ namespace ScriptableNBT {
             return this._value
         }
         set value(value: Nullable<number>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -323,7 +325,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getFloat(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -331,15 +333,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getFloat(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putFloat(index, this.value)
         }
     }
@@ -357,7 +359,7 @@ namespace ScriptableNBT {
             return this._value
         }
         set value(value: Nullable<number>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -373,7 +375,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getDouble(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -381,15 +383,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getDouble(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putDouble(index, this.value)
         }
     }
@@ -407,7 +409,7 @@ namespace ScriptableNBT {
             return this._value
         }
         set value(value: Nullable<string>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -422,7 +424,7 @@ namespace ScriptableNBT {
             this.value = compoundTag.getString(key)
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
-            if (this.value === null) {
+            if (this.value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -430,15 +432,15 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getString(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
-            if (this.value === null) return
+            if (index < 0 || index % 1 !== 0) return
+            if (this.value == null) return
             listTag.putString(index, this.value)
         }
     }
@@ -452,8 +454,14 @@ namespace ScriptableNBT {
             this.value = value
         }
 
+        /**
+         * Get the Scriptable NBT data.\
+         * **Attention**, the operation `get` will create a instance for each of its child elements,
+         * which could lead to a performance issue if unproperly used.\
+         * Consider using `NBTListValue.get` instead.
+         */
         get value(): Nullable<Array<INBTValue<any>>> {
-            if (this._value === null) return null
+            if (this._value == null) return null
             // @ts-ignore
             if (this._value.getClass) {
                 let listTag = this._value as NBT.ListTag
@@ -462,7 +470,10 @@ namespace ScriptableNBT {
                 for (let index = 0; index < length; ++index) {
                     let type = listTag.getValueType(index)
                     let temp = NBTValueFactory.createNBTValue(type)
-                    if (!temp) continue
+                    if (!temp) {
+                        if (type) Logger.Log(`ScriptableNBT: Unknown NBT type in listTag. (type number is ${ type })`, 'WARN')
+                        continue
+                    }
                     temp.fromListTag(listTag, index)
                     this._value[index] = temp
                 }
@@ -470,7 +481,7 @@ namespace ScriptableNBT {
             return this._value as Array<INBTValue<any>>
         }
         set value(value: Nullable<Array<INBTValue<any>> | NBT.ListTag>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -484,10 +495,36 @@ namespace ScriptableNBT {
         }
 
         /**
-         * Get the Scriptable NBT data as [[NBT.ListTag]]
+         * Get NBT value of specified index as Scriptable NBT data
+         * @param index the specified index
+         * @returns Scriptable NBT data if specified index exists in list tag. Otherwise is null.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
+         */
+        get(index: number): Nullable<INBTValue<any>> {
+            if (this._value == null) return null
+            if (index < 0) return null
+            // @ts-ignore
+            if (this._value.getClass) {
+                let listTag = this._value as NBT.ListTag
+                if (index >= listTag.length() || index % 1 !== 0) return null
+                let type = listTag.getValueType(index)
+                let temp = NBTValueFactory.createNBTValue(type)
+                if (!temp) {
+                    if (type) Logger.Log(`ScriptableNBT: Unknown NBT type in listTag. (type number is ${ type })`, 'WARN')
+                    return null
+                }
+                temp.fromListTag(listTag, index)
+                return temp || null
+            } else {
+                return this._value[index]
+            }
+        }
+
+        /**
+         * Get the Scriptable NBT data as [[NBT.ListTag]]. It's a clone.
          */
         get listTag(): Nullable<NBT.ListTag> {
-            if (this._value === null) return null
+            if (this._value == null) return null
             // @ts-ignore
             if (this._value.getClass) {
                 // @ts-ignore
@@ -513,7 +550,7 @@ namespace ScriptableNBT {
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
             let value = this.listTag
-            if (value === null) {
+            if (value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -521,16 +558,16 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getListTagNoClone(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
+            if (index < 0 || index % 1 !== 0) return
             let value = this.listTag
-            if (value === null) return
+            if (value == null) return
             listTag.putListTag(index, value)
         }
     }
@@ -544,8 +581,14 @@ namespace ScriptableNBT {
             this.value = value
         }
 
+        /**
+         * Get the Scriptable NBT data.\
+         * **Attention**, the operation `get` will create a instance for each of its child elements,
+         * which could lead to a performance issue if unproperly used.\
+         * Consider using `NBTCompoundValue.get` instead.
+         */
         get value(): Nullable<{[key: string]: INBTValue<any>}> {
-            if (this._value === null) return null
+            if (this._value == null) return null
             // @ts-ignore
             if (this._value.getClass) {
                 let compoundTag = this._value as NBT.CompoundTag
@@ -555,7 +598,10 @@ namespace ScriptableNBT {
                     let key = String(keys[index])
                     let type = compoundTag.getValueType(key)
                     let temp = NBTValueFactory.createNBTValue(type)
-                    if (!temp) continue
+                    if (!temp) {
+                        if (type) Logger.Log(`ScriptableNBT: Unknown NBT type in compoundTag. (type number is ${ type })`, 'WARN')
+                        continue
+                    }
                     temp.fromCompoundTag(compoundTag, key)
                     this._value[key] = temp
                 }
@@ -563,7 +609,7 @@ namespace ScriptableNBT {
             return this._value as {[key: string]: INBTValue<any>}
         }
         set value(value: Nullable<{[key: string]: INBTValue<any>} | NBT.CompoundTag>) {
-            if (value === null) {
+            if (value == null) {
                 this._value = null
                 return
             }
@@ -577,10 +623,34 @@ namespace ScriptableNBT {
         }
 
         /**
-         * Get the Scriptable NBT data as [[NBT.CompoundTag]]
+         * Get NBT value of specified key as Scriptable NBT data
+         * @param key the specified key
+         * @returns Scriptable NBT data if specified key exists in compound tag. Otherwise is null.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
+         */
+        get(key: string): Nullable<INBTValue<any>> {
+            if (this._value == null) return null
+            // @ts-ignore
+            if (this._value.getClass) {
+                let compoundTag = this._value as NBT.CompoundTag
+                if (!compoundTag.contains(key)) return null
+                let type = compoundTag.getValueType(key)
+                let temp = NBTValueFactory.createNBTValue(type)
+                if (!temp) {
+                    if (type) Logger.Log(`ScriptableNBT: Unknown NBT type in compoundTag. (type number is ${ type })`, 'WARN')
+                    return null
+                }
+                temp.fromCompoundTag(compoundTag, key)
+                return temp
+            }
+            return this._value[key] || null
+        }
+
+        /**
+         * Get the Scriptable NBT data as [[NBT.CompoundTag]]. It's a clone.
          */
         get compoundTag(): Nullable<NBT.CompoundTag> {
-            if (this._value === null) return null
+            if (this._value == null) return null
             // @ts-ignore
             if (this._value.getClass) {
                 return new NBT.CompoundTag(this._value as NBT.CompoundTag)
@@ -595,6 +665,18 @@ namespace ScriptableNBT {
                 return compoundTag
             }
         }
+        /**
+         * Get the Scriptable NBT data as [[NBT.CompoundTag]]. It's a reference.\
+         * If the type of inner value is not [[NBT.CompoundTag]], null is returned.
+         */
+        get refCompoundTag(): Nullable<NBT.CompoundTag> {
+            if (this._value == null) return null
+            // @ts-ignore
+            if (this._value.getClass) {
+                return this._value as NBT.CompoundTag
+            }
+            return null
+        }
 
         fromCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
             if (!compoundTag.containsValueOfType(key, this.type)) {
@@ -605,7 +687,7 @@ namespace ScriptableNBT {
         }
         applyToCompoundTag(compoundTag: NBT.CompoundTag, key: string): void {
             let value = this.compoundTag
-            if (value === null) {
+            if (value == null) {
                 compoundTag.remove(key)
                 return
             }
@@ -613,16 +695,16 @@ namespace ScriptableNBT {
         }
 
         fromListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0 || index >= listTag.length()) {
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) {
                 this.value = null
                 return
             }
             this.value = listTag.getCompoundTagNoClone(index)
         }
         applyToListTag(listTag: NBT.ListTag, index: number): void {
-            if (index < 0) return
+            if (index < 0 || index % 1 !== 0) return
             let value = this.compoundTag
-            if (value === null) return
+            if (value == null) return
             listTag.putCompoundTag(index, value)
         }
     }
@@ -674,12 +756,17 @@ namespace ScriptableNBT {
          * Get NBT value of specified key as Scriptable NBT data
          * @param compoundTag source compound tag
          * @param key the specified key
-         * @returns Scriptable NBT data if specified key exists in compound tag. Otherwise is null.
+         * @returns Scriptable NBT data if specified key exists in compound tag. Otherwise is null.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
          */
         static getCompoundTagValue(compoundTag: NBT.CompoundTag, key: string): Nullable<INBTValue<any>> {
+            if (!compoundTag.contains(key)) return null
             let type = compoundTag.getValueType(key)
             let value = NBTValueFactory.createNBTValue(type)
-            if (!value) return null
+            if (!value) {
+                if (type) Logger.Log(`ScriptableNBT: Unknown NBT type in compoundTag. (type number is ${ type })`, 'WARN')
+                return null
+            }
             value.fromCompoundTag(compoundTag, key)
             return value
         }
@@ -687,15 +774,100 @@ namespace ScriptableNBT {
          * Get NBT value of specified index as Scriptable NBT data
          * @param listTag source list tag
          * @param index the specified index
-         * @returns Scriptable NBT data if specified index exists in list tag. Otherwise is null.
+         * @returns Scriptable NBT data if specified index exists in list tag. Otherwise is null.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
          */
         static getListTagValue(listTag: NBT.ListTag, index: number): Nullable<INBTValue<any>> {
-            if (index < 0 || index >= listTag.length()) return null
+            if (index < 0 || index >= listTag.length() || index % 1 !== 0) return null
             let type = listTag.getValueType(index)
             let value = NBTValueFactory.createNBTValue(type)
-            if (!value) return null
+            if (!value) {
+                if (type) Logger.Log(`ScriptableNBT: Unknown NBT type in listTag. (type number is ${ type })`, 'WARN')
+                return null
+            }
             value.fromListTag(listTag, index)
             return value
+        }
+
+        /**
+         * Get NBT of specified keys and indexes
+         * @param tag source compound tag or list tag
+         * @param args the specified keys and indexes
+         * @returns a reference to the compound tag or list tag
+         */
+        static getTag(tag: NBT.CompoundTag | NBT.ListTag, ...args: Array<string | number>): Nullable<NBT.CompoundTag | NBT.ListTag> {
+            for (let key of args) {
+                if (typeof key === 'string') {
+                    // @ts-ignore
+                    if (!tag.getClass || !tag.contains) return null
+                    tag = <NBT.CompoundTag> tag
+                    if (!tag.contains(key)) return null
+                    let type = tag.getValueType(key)
+                    if (type === ENbtDataType.TYPE_COMPOUND) tag = tag.getCompoundTagNoClone(key)
+                    else if (type === ENbtDataType.TYPE_LIST) tag = tag.getListTagNoClone(key)
+                    else return null
+                } else if (typeof key === 'number') {
+                    // @ts-ignore
+                    if (!tag.getClass || !tag.length) return null
+                    tag = <NBT.ListTag> tag
+                    if (key < 0 || key >= tag.length() || key % 1 !== 0) return null
+                    let type = tag.getValueType(key)
+                    if (type === ENbtDataType.TYPE_COMPOUND) tag = tag.getCompoundTagNoClone(key)
+                    else if (type === ENbtDataType.TYPE_LIST) tag = tag.getListTagNoClone(key)
+                    else return null
+                } else {
+                    return null
+                }
+            }
+            return tag
+        }
+
+        /**
+         * Get NBT value of specified keys and indexes as Scriptable NBT data
+         * @param tag source compound tag or list tag
+         * @param args the specified keys and indexes. Should not be empty.
+         * @returns Scriptable NBT data if specified index exists in list tag.\
+         * If this is instance of `NBTListValue` or `NBTCompoundValue`, it's a reference but not a clone.
+         */
+        static getTagValue(tag: NBT.CompoundTag | NBT.ListTag, ...args: Array<string | number>): Nullable<INBTValue<any>> {
+            if (!args.length) return null
+            let lastKey = args[args.length - 1]
+            args.pop()
+            let temp = this.getTag(tag, ...args)
+            if (!temp) return null
+            if (typeof lastKey === 'string') {
+                // @ts-ignore
+                if (!temp.getClass || !temp.contains) return null
+                return this.getCompoundTagValue(<NBT.CompoundTag> temp, lastKey)
+            } else if (typeof lastKey === 'number') {
+                // @ts-ignore
+                if (!temp.getClass || !temp.length) return null
+                return this.getListTagValue(<NBT.ListTag> temp, lastKey)
+            } else {
+                return null
+            }
+        }
+        /**
+         * Set NBT value of specified keys and indexes by Scriptable NBT data
+         * @param tag source compound tag or list tag
+         * @param value Scriptable NBT data
+         * @param args the specified keys and indexes. Should not be empty.
+         */
+        static setTagValue(tag: NBT.CompoundTag | NBT.ListTag, value: INBTValue<any>, ...args: Array<string | number>): void {
+            if (!args.length) return
+            let lastKey = args[args.length - 1]
+            args.pop()
+            let temp = this.getTag(tag, ...args)
+            if (!temp) return
+            if (typeof lastKey === 'string') {
+                // @ts-ignore
+                if (!temp.getClass || !temp.contains) return
+                value.applyToCompoundTag(<NBT.CompoundTag> temp, lastKey)
+            } else if (typeof lastKey === 'number') {
+                // @ts-ignore
+                if (!temp.getClass || !temp.length) return
+                value.applyToListTag(<NBT.ListTag> temp, lastKey)
+            }
         }
 
         /**
